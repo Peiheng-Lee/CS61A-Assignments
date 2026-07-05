@@ -22,6 +22,14 @@ def roll_dice(num_rolls, dice=six_sided):
     assert num_rolls > 0, 'Must roll at least once.'
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    time, sum = 0, 0
+    while time < num_rolls:
+        time += 1
+        dice_val = dice()
+        if dice_val == 1:
+            return 1
+        sum += dice_val
+    return sum
     # END PROBLEM 1
 
 
@@ -77,6 +85,12 @@ def num_factors(n):
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    factor, count = 0, 0
+    while factor < n:
+        factor += 1
+        if n % factor == 0:
+            count += 1
+    return count
     # END PROBLEM 4
 
 def sus_points(score):

@@ -25,7 +25,10 @@ def num_eights(n):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if n == 0:
+        return 0
+    return (1 if n % 10 == 8 else 0) + num_eights(n // 10) # 分离出一位，剩下的视为一个整体进行递归
+    
 
 def digit_distance(n):
     """Determines the digit distance of n.
@@ -47,6 +50,9 @@ def digit_distance(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n < 10:
+        return 0
+    return (abs(n % 10 - (n % 100)//10)) + digit_distance(n // 10)
 
 
 def interleaved_sum(n, odd_func, even_func):
@@ -71,6 +77,19 @@ def interleaved_sum(n, odd_func, even_func):
     True
     """
     "*** YOUR CODE HERE ***"
+    # 辅助递归函数：从当前数k开始累加，is_odd标记k是否为奇数（避免用%）
+    def helper(k, is_odd):
+        # 终止条件：k为0时，累加和为0
+        if k == 0:
+            return 0
+        # 递归：当前值 + 下一个数的累加和（下一个数的奇偶性反转）
+        else:
+            current_val = odd_func(k) if is_odd(k) else even_func(k)
+            return current_val + helper(k - 1, not is_odd)
+    
+    # 初始调用：从n开始，n的奇偶性由n是否等于n//2*2+1判断
+    is_odd = (n == n//2 * 2 + 1)
+    return helper(n, is_odd)
 
 
 def next_smaller_dollar(bill):
@@ -107,6 +126,21 @@ def count_dollars(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(remain, max_bill):
+        # 如果剩余钱为0，说明找到一种组合
+        if remain == 0:
+            return 1
+        elif remain < 0 or max_bill == 0:
+            return 0 
+        
+        # 递归路径1: 使用当前面额
+        use_current = helper(remain - max_bill, max_bill)
+        # 递归路径2: 使用更小面额
+        use_smaller = helper(remain, next_smaller_dollar(max_bill))
+
+        return use_current + use_smaller
+    
+    return helper(total, 100)
 
 
 def next_larger_dollar(bill):
@@ -143,6 +177,18 @@ def count_dollars_upward(total):
     True
     """
     "*** YOUR CODE HERE ***"
+    def helper(remain, min_bill):
+        if remain == 0:
+            return 1
+        elif remain < 0 or min_bill == 0:
+            return 0
+        
+        use_current = helper(remain - min_bill, min_bill)
+        use_larger = helper(remain, next_larger_dollar)
+
+        return use_current + use_larger
+
+    return helper(total, 1)
 
 
 def print_move(origin, destination):
@@ -178,6 +224,13 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    auxiliary = ([1, 2, 3] - [start, end]).value()
+    if n == 1:
+        print_move(start, end)
+    else:
+        move_stack(n - 1, start, auxiliary)
+        print_move(start, auxiliary)
+        move_stack(n - 1, auxiliary, end)
 
 
 from operator import sub, mul
@@ -193,5 +246,5 @@ def make_anonymous_factorial():
     ...     ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return lambda _: lambda x: [mul(i) for i in range(1, x+1)]
 

@@ -14,6 +14,11 @@ def composite_identity(f, g):
     False
     """
     "*** YOUR CODE HERE ***"
+    def state(x):
+        if f(g(x)) == g(f(x)):
+            return True
+        return False
+    return state
 
 
 def sum_digits(y):
@@ -71,6 +76,13 @@ def multiple(a, b):
     42
     """
     "*** YOUR CODE HERE ***"
+    current_factor = 1
+    for i in range(1, min(a, b) + 1):
+        if a % i == 0 and b % i == 0:
+            current_factor = i
+    gcd = current_factor
+    lcm = a // gcd * b # 使用整数除法保证输出类型
+    return lcm
 
 
 
@@ -101,4 +113,20 @@ def cycle(f1, f2, f3):
     19
     """
     "*** YOUR CODE HERE ***"
-
+    # 定义外层返回的函数（接收次数n）
+    def get_cycled_func(n):
+        # 定义最终执行操作的函数（接收输入值x）
+        def apply_cycle(x):
+            result = x
+            # 遍历n次，按循环顺序调用函数
+            for i in range(n):
+                # i从0开始：0→f1，1→f2，2→f3，3→f1（3%3=0），以此类推
+                if i % 3 == 0:
+                    result = f1(result)
+                elif i % 3 == 1:
+                    result = f2(result)
+                else:  # i%3 == 2
+                    result = f3(result)
+            return result
+        return apply_cycle
+    return get_cycled_func

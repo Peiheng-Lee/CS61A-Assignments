@@ -8,7 +8,19 @@ def digit(n, k):
     >>> digit(3579, 10)
     0
     """
-    return ____
+    assert k >= 0, "ValueError: k must be a nonitive integer."
+
+    count = -1
+    # while loop参数的选择方法: 用一个变量，而非常量
+    while n > 0:
+        n, last = n // 10, n % 10
+        count += 1
+        if count == k:
+            break
+
+        last = 0
+   
+    return last
 
 
 def middle(a, b, c):
@@ -26,7 +38,16 @@ def middle(a, b, c):
     >>> middle(30, 5, 40)
     30
     """
-    return ____
+    assert a != b and b != c and a != c, "a, b, and c must be all different numbers!"
+
+    if b < a < c or c < a < b:
+        result = a
+    elif a < b < c or c < b < a:
+        result = b
+    else:
+        result = c
+
+    return result
 
 
 def falling(n, k):
@@ -42,6 +63,10 @@ def falling(n, k):
     1
     """
     "*** YOUR CODE HERE ***"
+    factorial = 1
+    while k > 0:
+        n, k, factorial = n - 1, k - 1, factorial * n
+    return factorial
 
 
 def divisible_by_k(n, k):
@@ -65,6 +90,13 @@ def divisible_by_k(n, k):
     0
     """
     "*** YOUR CODE HERE ***"
+    current, count = k, 0
+    
+    while current <= n:
+            print(k)
+            k, count = k + current, count + 1
+    return count
+            
 
 
 def sum_digits(y):
@@ -81,6 +113,12 @@ def sum_digits(y):
     6
     """
     "*** YOUR CODE HERE ***"
+    left, total = y, 0
+    while left > 0:
+        left, remainder = left // 10, left % 10
+        total = total + remainder
+
+    return total
 
 
 def double_eights(n):
@@ -99,4 +137,12 @@ def double_eights(n):
     False
     """
     "*** YOUR CODE HERE ***"
+    left = n
+    while left > 0:
+        left, remainder = left // 10, left % 10
+        if remainder == 8:
+            left, remainder = left // 10, left % 10
+            if remainder == 8:
+                return True
+    return False
 
